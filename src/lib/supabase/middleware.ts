@@ -25,8 +25,6 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // IMPORTANT: do not run code between createServerClient and
-  // supabase.auth.getUser() — a middleware session bug may result.
   const {
     data: { user },
   } = await supabase.auth.getUser()

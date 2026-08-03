@@ -20,7 +20,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-sm mx-auto px-4">
-      {/* Logo mark */}
       <div className="flex flex-col items-center gap-6">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
@@ -31,7 +30,6 @@ export default function LoginPage() {
           </span>
         </div>
 
-        {/* Card */}
         <div className="w-full border border-border rounded-lg p-8 bg-card">
           <div className="mb-6 text-center">
             <h1 className="text-lg font-semibold text-foreground mb-1">
@@ -46,9 +44,8 @@ export default function LoginPage() {
             id="google-sign-in-btn"
             onClick={signInWithGoogle}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-border rounded-md bg-background text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-border rounded-md bg-background text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px]"
           >
-            {/* Google logo SVG */}
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path
                 d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"

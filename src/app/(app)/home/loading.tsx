@@ -3,7 +3,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 export default function HomeLoading() {
   return (
     <div>
-      {/* Section header skeleton */}
       <div className="section-header">
         <div className="space-y-2">
           <Skeleton className="h-6 w-40" />
@@ -11,7 +10,6 @@ export default function HomeLoading() {
         </div>
       </div>
 
-      {/* Quick-links grid skeleton — 5 cards, matches real layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
         {Array.from({ length: 5 }).map((_, i) => (
           <div

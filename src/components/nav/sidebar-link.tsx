@@ -9,22 +9,23 @@ interface SidebarLinkProps {
   href: string
   children: React.ReactNode
   icon: React.ReactNode
+  onNavigate?: () => void
 }
 
-export function SidebarLink({ href, children, icon }: SidebarLinkProps) {
+export function SidebarLink({ href, children, icon, onNavigate }: SidebarLinkProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [optimisticHref, setOptimisticHref] = useState<string | null>(null)
 
   const isActive = pathname === href || (href !== '/' && pathname.startsWith(href))
-  // Show active style immediately on click (optimistic) or when actually on route
   const showActive = isActive || (isPending && optimisticHref === href)
 
   return (
     <Link
       href={href}
       onClick={(e) => {
+        onNavigate?.()
         if (pathname === href) return
         e.preventDefault()
         setOptimisticHref(href)
@@ -34,7 +35,7 @@ export function SidebarLink({ href, children, icon }: SidebarLinkProps) {
         })
       }}
       className={cn(
-        'flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+        'flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors min-h-[44px] touch-manipulation',
         showActive
           ? 'bg-accent text-foreground'
           : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'

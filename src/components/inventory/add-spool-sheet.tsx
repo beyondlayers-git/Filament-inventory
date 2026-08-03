@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -110,7 +110,6 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            {/* Profile selector */}
             <FormField
               control={form.control}
               name="profile_id"
@@ -133,6 +132,7 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
                                 alt=""
                                 width={28}
                                 height={28}
+                                sizes="28px"
                                 className="object-cover w-full h-full"
                               />
                             ) : (
@@ -183,6 +183,7 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
                                       alt=""
                                       width={28}
                                       height={28}
+                                      sizes="28px"
                                       className="object-cover w-full h-full"
                                     />
                                   ) : (
@@ -212,7 +213,6 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
               )}
             />
 
-            {/* Filament number */}
             <FormField
               control={form.control}
               name="filament_number"
@@ -231,7 +231,6 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
               )}
             />
 
-            {/* Weight + Cost */}
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -274,7 +273,6 @@ export function AddSpoolSheet({ profiles }: AddSpoolSheetProps) {
               />
             </div>
 
-            {/* Purchase date */}
             <FormField
               control={form.control}
               name="purchase_date"

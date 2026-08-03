@@ -61,7 +61,6 @@ export default async function FilamentsPage() {
             <tbody>
               {profiles.map((profile) => (
                 <tr key={profile.id}>
-                  {/* Thumbnail */}
                   <td className="px-4 py-3">
                     <div className="w-9 h-9 rounded border border-border bg-muted overflow-hidden flex items-center justify-center shrink-0">
                       {profile.image_url ? (
@@ -70,6 +69,7 @@ export default async function FilamentsPage() {
                           alt={`${profile.brand} ${profile.color}`}
                           width={36}
                           height={36}
+                          sizes="36px"
                           className="object-cover w-full h-full"
                         />
                       ) : (

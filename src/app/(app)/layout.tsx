@@ -3,10 +3,10 @@ import { Toaster } from '@/components/ui/sonner'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col md:flex-row bg-background">
       <Sidebar />
-      <main className="flex-1 ml-56 min-h-screen">
-        <div className="p-8 max-w-5xl mx-auto">
+      <main className="flex-1 md:ml-56 min-h-screen flex flex-col w-full min-w-0">
+        <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto w-full flex-1">
           {children}
         </div>
       </main>

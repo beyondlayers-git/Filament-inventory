@@ -41,7 +41,6 @@ export default async function InventoryPage({
     getSettings(),
   ])
 
-  // Filter + sort in JS (data small enough for this)
   let filtered = spools ?? []
 
   if (q) {
@@ -69,7 +68,6 @@ export default async function InventoryPage({
     )
   }
 
-  // Group by color for quantity count
   const colorCounts: Record<string, number> = {}
   for (const s of spools ?? []) {
     const color = (s.profile as any)?.color ?? 'Unknown'
@@ -95,7 +93,6 @@ export default async function InventoryPage({
         </div>
       </div>
 
-      {/* Color quantity summary */}
       {Object.keys(colorCounts).length > 0 && (
         <div className="flex flex-wrap gap-2 mb-5">
           {Object.entries(colorCounts).map(([color, count]) => (
@@ -110,7 +107,6 @@ export default async function InventoryPage({
         </div>
       )}
 
-      {/* Filters */}
       <Suspense fallback={<div className="h-8" />}>
         <InventoryFilters />
       </Suspense>
@@ -154,7 +150,6 @@ export default async function InventoryPage({
 
                 return (
                   <tr key={spool.id}>
-                    {/* Thumbnail */}
                     <td className="px-4 py-3">
                       <div className="w-8 h-8 rounded border border-border bg-muted overflow-hidden flex items-center justify-center shrink-0">
                         {profile?.image_url ? (
@@ -163,6 +158,7 @@ export default async function InventoryPage({
                             alt=""
                             width={32}
                             height={32}
+                            sizes="32px"
                             className="object-cover w-full h-full"
                           />
                         ) : (
@@ -171,7 +167,6 @@ export default async function InventoryPage({
                       </div>
                     </td>
 
-                    {/* Filament number */}
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-foreground">
@@ -189,7 +184,6 @@ export default async function InventoryPage({
                       </div>
                     </td>
 
-                    {/* Profile info */}
                     <td className="px-4 py-3">
                       <p className="text-sm text-foreground">{profile?.brand}</p>
                       <p className="text-xs text-muted-foreground">
@@ -197,7 +191,6 @@ export default async function InventoryPage({
                       </p>
                     </td>
 
-                    {/* Purchase Date */}
                     <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap">
                       {spool.purchase_date
                         ? new Date(spool.purchase_date).toLocaleDateString('en-US', {
@@ -208,7 +201,6 @@ export default async function InventoryPage({
                         : '—'}
                     </td>
 
-                    {/* Available weight with mini progress */}
                     <td className="px-4 py-3 text-right">
                       <p
                         className={`text-sm font-medium tabular-nums ${
@@ -229,17 +221,14 @@ export default async function InventoryPage({
                       </div>
                     </td>
 
-                    {/* Total weight */}
                     <td className="px-4 py-3 text-sm text-right text-muted-foreground tabular-nums">
                       {Number(spool.total_weight).toFixed(0)} g
                     </td>
 
-                    {/* Cost per gram */}
                     <td className="px-4 py-3 text-sm text-right text-muted-foreground tabular-nums">
                       ₹{Number(spool.cost_per_gram).toFixed(3)}/g
                     </td>
 
-                    {/* Actions */}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
                         <CorrectValueDialog

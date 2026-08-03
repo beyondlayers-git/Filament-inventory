@@ -74,7 +74,6 @@ export async function deleteFilamentProfile(id: string) {
     .eq('user_id', user.id)
 
   if (error) {
-    // FK restrict: spools still reference this profile
     if (error.code === '23503') {
       throw new Error(
         'This profile is in use by one or more spools. Remove those spools first.'

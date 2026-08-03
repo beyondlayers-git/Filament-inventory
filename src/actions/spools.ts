@@ -21,7 +21,7 @@ export async function createSpool(data: {
     profile_id: data.profile_id,
     filament_number: data.filament_number,
     total_weight: data.total_weight,
-    available_weight: data.total_weight, // spool starts full
+    available_weight: data.total_weight,
     cost: data.cost,
     purchase_date: data.purchase_date ?? null,
   })

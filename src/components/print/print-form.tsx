@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -66,7 +66,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
   const spoolId = form.watch('spool_id')
   const filamentRequired = form.watch('filament_required')
 
-  // Inline print number collision check
   useEffect(() => {
     if (!printNumber) return
     const timer = setTimeout(async () => {
@@ -78,13 +77,11 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
     return () => clearTimeout(timer)
   }, [printNumber])
 
-  // Update selected spool
   useEffect(() => {
     const spool = spools.find((s) => s.id === spoolId) ?? null
     setSelectedSpool(spool)
   }, [spoolId, spools])
 
-  // Live cost preview
   useEffect(() => {
     if (selectedSpool && filamentRequired > 0) {
       setCostPreview(
@@ -145,7 +142,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {/* Print number */}
         <FormField
           control={form.control}
           name="print_number"
@@ -180,7 +176,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
           )}
         />
 
-        {/* Spool selector */}
         <FormField
           control={form.control}
           name="spool_id"
@@ -208,7 +203,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
           )}
         />
 
-        {/* Spool info strip */}
         {selectedSpool && (
           <div
             className={`flex items-center gap-2.5 p-3 rounded-md border ${
@@ -236,7 +230,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
           </div>
         )}
 
-        {/* Filament required */}
         <FormField
           control={form.control}
           name="filament_required"
@@ -266,7 +259,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
           )}
         />
 
-        {/* Total layers */}
         <FormField
           control={form.control}
           name="total_layers"
@@ -288,7 +280,6 @@ export function PrintForm({ spools, nextPrintNumber }: PrintFormProps) {
           )}
         />
 
-        {/* Live cost preview */}
         {costPreview !== null && (
           <div className="flex items-center justify-between p-3 bg-muted rounded-md border border-border">
             <span className="text-xs text-muted-foreground">Estimated cost</span>

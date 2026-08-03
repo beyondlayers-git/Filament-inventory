@@ -49,7 +49,6 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
   const [layersPrinted, setLayersPrinted] = useState('')
   const [loading, setLoading] = useState(false)
   const [showEditConfirm, setShowEditConfirm] = useState(false)
-  const [pendingSubmit, setPendingSubmit] = useState(false)
 
   const now = new Date()
   const threshold48h = subHours(now, 48)
@@ -107,7 +106,6 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
 
   return (
     <div className="space-y-6">
-      {/* Print selector */}
       <div className="space-y-2">
         <Label className="text-sm font-medium">Select print</Label>
         {prints.length === 0 ? (
@@ -127,7 +125,7 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
                   id={`select-print-${print.id}`}
                   type="button"
                   onClick={() => handleSelectPrint(print)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors touch-manipulation min-h-[44px] ${
                     isSelected
                       ? 'bg-primary/5 border-l-2 border-l-primary'
                       : 'hover:bg-muted'
@@ -170,7 +168,6 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
         )}
       </div>
 
-      {/* Layers input */}
       {selectedPrint && (
         <div className="space-y-4 p-4 border border-border rounded-md bg-muted/30">
           <div>
@@ -208,7 +205,6 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
             )}
           </div>
 
-          {/* Preview */}
           {consumedPreview !== null && leftoverPreview !== null && (
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 border border-border rounded-md bg-card">
@@ -238,7 +234,6 @@ export function FailedPrintForm({ prints }: FailedPrintFormProps) {
         </div>
       )}
 
-      {/* Edit confirmation dialog */}
       <AlertDialog open={showEditConfirm} onOpenChange={setShowEditConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>

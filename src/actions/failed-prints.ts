@@ -32,7 +32,6 @@ export async function submitFailedPrint(
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  // Fetch the print with its spool
   const { data: print, error: printErr } = await supabase
     .from('prints')
     .select('*, spool:filament_spools(id, available_weight)')
@@ -49,8 +48,6 @@ export async function submitFailedPrint(
   const spool = print.spool as any
   let currentSpoolWeight: number = spool?.available_weight ?? 0
 
-  // If already failed: reverse old leftover (subtract it from the spool's
-  // current weight so we can re-apply the corrected value)
   const { data: existingFp } = await supabase
     .from('failed_prints')
     .select('leftover_grams')
@@ -63,7 +60,6 @@ export async function submitFailedPrint(
 
   const newSpoolWeight = currentSpoolWeight + leftover
 
-  // Update spool available_weight
   if (spool?.id) {
     const { error: spoolErr } = await supabase
       .from('filament_spools')
@@ -74,7 +70,6 @@ export async function submitFailedPrint(
     if (spoolErr) throw new Error(spoolErr.message)
   }
 
-  // Upsert failed_prints (handles both first submit and edits)
   const { error: fpErr } = await supabase.from('failed_prints').upsert(
     {
       print_id: printId,
@@ -87,7 +82,6 @@ export async function submitFailedPrint(
 
   if (fpErr) throw new Error(fpErr.message)
 
-  // Update print status to failed
   const { error: statusErr } = await supabase
     .from('prints')
     .update({ status: 'failed' })

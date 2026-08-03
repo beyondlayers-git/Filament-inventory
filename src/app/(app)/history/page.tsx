@@ -15,7 +15,6 @@ export default async function HistoryPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Fetch only the latest 100 prints (older records are auto-deleted on insert)
   const { data: prints } = await supabase
     .from('prints')
     .select(
@@ -51,7 +50,6 @@ export default async function HistoryPage() {
           </TabsTrigger>
         </TabsList>
 
-        {/* Successful prints tab */}
         <TabsContent value="successful">
           {successful.length > 0 ? (
             <div className="data-table-container">
@@ -133,7 +131,6 @@ export default async function HistoryPage() {
           )}
         </TabsContent>
 
-        {/* Failed prints tab */}
         <TabsContent value="failed">
           {failed.length > 0 ? (
             <div className="data-table-container">

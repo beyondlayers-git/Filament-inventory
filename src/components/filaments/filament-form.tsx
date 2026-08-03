@@ -81,7 +81,7 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
   }
 
   async function uploadImage(userId: string): Promise<string | null> {
-    if (!imageFile) return imagePreview // keep existing or null
+    if (!imageFile) return imagePreview
     const ext = imageFile.name.split('.').pop()
     const path = `${userId}/${crypto.randomUUID()}.${ext}`
     const { error } = await supabase.storage
@@ -122,7 +122,6 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {/* Image upload */}
         <div className="space-y-2">
           <Label>Image (optional)</Label>
           {imagePreview ? (
@@ -133,6 +132,7 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
                   alt="Preview"
                   width={80}
                   height={80}
+                  sizes="80px"
                   className="object-cover w-full h-full"
                   unoptimized={imagePreview.startsWith('blob:')}
                 />
@@ -167,7 +167,6 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
           />
         </div>
 
-        {/* Brand */}
         <FormField
           control={form.control}
           name="brand"
@@ -182,7 +181,6 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
           )}
         />
 
-        {/* Material type */}
         <FormField
           control={form.control}
           name="material_type"
@@ -208,7 +206,6 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
           )}
         />
 
-        {/* Color */}
         <FormField
           control={form.control}
           name="color"
@@ -223,7 +220,6 @@ export function FilamentForm({ profile, onSuccess }: FilamentFormProps) {
           )}
         />
 
-        {/* Weight + Cost row */}
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}

@@ -41,7 +41,7 @@ export async function checkPrintNumberAvailable(
     .eq('print_number', printNumber)
     .maybeSingle()
 
-  return data === null // true = available
+  return data === null
 }
 
 export async function createPrint(data: {
@@ -56,7 +56,6 @@ export async function createPrint(data: {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  // Double-check print number uniqueness server-side
   const { data: existing } = await supabase
     .from('prints')
     .select('id')
@@ -70,7 +69,6 @@ export async function createPrint(data: {
     )
   }
 
-  // Fetch spool's current available weight
   const { data: spool, error: spoolErr } = await supabase
     .from('filament_spools')
     .select('available_weight, cost_per_gram, filament_number')
@@ -89,7 +87,6 @@ export async function createPrint(data: {
 
   const newAvailableWeight = spool.available_weight - data.filament_required
 
-  // Insert print record
   const { error: printErr } = await supabase.from('prints').insert({
     user_id: user.id,
     print_number: data.print_number,
@@ -101,7 +98,6 @@ export async function createPrint(data: {
 
   if (printErr) throw new Error(printErr.message)
 
-  // Deduct from spool
   const { error: updateErr } = await supabase
     .from('filament_spools')
     .update({ available_weight: newAvailableWeight })
@@ -110,24 +106,20 @@ export async function createPrint(data: {
 
   if (updateErr) throw new Error(updateErr.message)
 
-  // ── Auto-cleanup: keep only the latest 100 prints per user ──────────────────
-  // Find the created_at of the 101st most-recent print (if it exists)
   const { data: cutoff } = await supabase
     .from('prints')
     .select('created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
-    .range(100, 100) // 0-indexed → this is the 101st row
+    .range(100, 100)
 
   if (cutoff && cutoff.length > 0) {
-    // Delete every print older than or equal to that timestamp (i.e. #101 onwards)
     await supabase
       .from('prints')
       .delete()
       .eq('user_id', user.id)
       .lte('created_at', cutoff[0].created_at)
   }
-  // ────────────────────────────────────────────────────────────────────────────
 
   revalidatePath('/print')
   revalidatePath('/inventory')
