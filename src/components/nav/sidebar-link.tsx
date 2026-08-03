@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useTransition, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface SidebarLinkProps {
@@ -12,14 +13,29 @@ interface SidebarLinkProps {
 
 export function SidebarLink({ href, children, icon }: SidebarLinkProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [optimisticHref, setOptimisticHref] = useState<string | null>(null)
+
   const isActive = pathname === href || (href !== '/' && pathname.startsWith(href))
+  // Show active style immediately on click (optimistic) or when actually on route
+  const showActive = isActive || (isPending && optimisticHref === href)
 
   return (
     <Link
       href={href}
+      onClick={(e) => {
+        if (pathname === href) return
+        e.preventDefault()
+        setOptimisticHref(href)
+        startTransition(() => {
+          router.push(href)
+          setOptimisticHref(null)
+        })
+      }}
       className={cn(
         'flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors',
-        isActive
+        showActive
           ? 'bg-accent text-foreground'
           : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
       )}

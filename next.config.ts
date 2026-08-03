@@ -3,6 +3,11 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactCompiler: true,
   devIndicators: false,
+  experimental: {
+    // Inline critical CSS and defer non-critical stylesheets
+    // Eliminates the render-blocking CSS chunk flagged by Lighthouse
+    optimizeCss: true,
+  },
   images: {
     remotePatterns: [
       {
