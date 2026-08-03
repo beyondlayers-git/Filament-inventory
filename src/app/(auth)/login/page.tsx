@@ -72,6 +72,18 @@ export default function LoginPage() {
           Your data is private and only accessible to you.
         </p>
       </div>
+
+      <div className="fixed bottom-4 right-4 text-xs text-muted-foreground select-none">
+        Developed by{' @'}
+        <a
+          href="https://athishmano.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted-foreground underline decoration-muted-foreground/40 underline-offset-2 decoration-[0.5px]"
+        >
+          Athish
+        </a>
+      </div>
     </div>
   )
 }
