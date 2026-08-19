@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getSettings } from '@/actions/settings'
 import { AddSpoolSheet } from '@/components/inventory/add-spool-sheet'
@@ -27,16 +28,20 @@ export default async function InventoryPage({
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const [{ data: spools }, { data: profiles }, settings] = await Promise.all([
     supabase
       .from('filament_spools')
       .select('*, profile:filament_profiles(*)')
-      .eq('user_id', user!.id)
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false }),
     supabase
       .from('filament_profiles')
       .select('*')
-      .eq('user_id', user!.id)
+      .eq('user_id', user.id)
       .order('brand'),
     getSettings(),
   ])

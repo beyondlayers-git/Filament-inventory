@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Package, Printer, AlertTriangle, Plus, History } from 'lucide-react'
 
@@ -47,8 +48,12 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const name =
-    user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'there'
+    user.user_metadata?.full_name ?? user.email?.split('@')[0] ?? 'there'
 
   return (
     <div>

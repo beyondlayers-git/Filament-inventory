@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { format } from 'date-fns'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -15,12 +16,16 @@ export default async function HistoryPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const { data: prints } = await supabase
     .from('prints')
     .select(
       '*, spool:filament_spools(filament_number, profile:filament_profiles(brand, material_type, color)), failed_print:failed_prints(*)'
     )
-    .eq('user_id', user!.id)
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(100)
 

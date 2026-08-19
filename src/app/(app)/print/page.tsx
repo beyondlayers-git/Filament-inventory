@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getNextPrintNumber } from '@/actions/prints'
 import { PrintForm } from '@/components/print/print-form'
@@ -14,11 +15,15 @@ export default async function PrintPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const [{ data: rawSpools }, nextPrintNumber] = await Promise.all([
     supabase
       .from('filament_spools')
       .select('id, filament_number, available_weight, cost_per_gram, profile:filament_profiles(brand, material_type, color)')
-      .eq('user_id', user!.id)
+      .eq('user_id', user.id)
       .order('filament_number'),
     getNextPrintNumber(),
   ])

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { AddFilamentSheet, EditFilamentSheet } from '@/components/filaments/filament-sheet'
 import { DeleteFilamentDialog } from '@/components/filaments/delete-filament-dialog'
@@ -16,10 +17,14 @@ export default async function FilamentsPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const { data: profiles } = await supabase
     .from('filament_profiles')
     .select('*')
-    .eq('user_id', user!.id)
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
   return (
